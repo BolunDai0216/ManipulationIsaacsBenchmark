@@ -1,0 +1,9 @@
+device:
+  compute_device_id: 0
+  compute_device_name: cuda:${device.compute_device_id}
+  render_device_id: 1
+  render_device_name: cuda:${device.render_device_id}
+
+assets:
+  root_folder: /home/bolun/Documents/IsaacGym_Preview_4_Package/isaacgym/assets
+  franka_urdf: urdf/franka_description/robots/franka_panda.urdf
