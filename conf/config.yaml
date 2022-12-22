@@ -7,3 +7,11 @@ device:
 assets:
   root_folder: /home/bolun/Documents/IsaacGym_Preview_4_Package/isaacgym/assets
   franka_urdf: urdf/franka_description/robots/franka_panda.urdf
+
+franka:
+  joint_stiffness: [400, 400, 400, 400, 400, 400, 400, 1e6, 1e6]
+  joint_damping: [80, 80, 80, 80, 80, 80, 80, 100, 100]
+
+env:
+  num_envs: 256
+  spacing: 1.0
