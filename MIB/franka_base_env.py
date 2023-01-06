@@ -77,6 +77,10 @@ class FrankaBaseEnv:
         self.gym.sync_frame_time(self.sim)
 
     def _set_sim_params(self):
+        """
+        Set the simulation parameters, including the parameters for
+        the physics engine.
+        """
         self.sim_params = gymapi.SimParams()
         self.sim_params.up_axis = gymapi.UP_AXIS_Z
         self.sim_params.gravity = gymapi.Vec3(0.0, 0.0, -9.8)
@@ -94,6 +98,9 @@ class FrankaBaseEnv:
         self.sim_params.physx.use_gpu = True
 
     def _load_franka_asset(self):
+        """
+        Load the Franka assets.
+        """
         self.frana_asset_options = gymapi.AssetOptions()
         self.frana_asset_options.armature = 0.01
         self.frana_asset_options.fix_base_link = True
@@ -107,6 +114,9 @@ class FrankaBaseEnv:
         )
 
     def _set_franka_joint_configs(self):
+        """
+        Set the joint actuation and position properties of the Franka joints.
+        """
         self.franka_dof_props = self.gym.get_asset_dof_properties(self.franka_asset)
         self.franka_num_dofs = self.gym.get_asset_dof_count(self.franka_asset)
         self.franka_num_bodies = self.gym.get_asset_rigid_body_count(self.franka_asset)
@@ -132,6 +142,9 @@ class FrankaBaseEnv:
         self.default_dof_state["pos"] = self.default_dof_pos
 
     def _set_env_params(self):
+        """
+        Set simulation environment parameters.
+        """
         self.num_envs = self.cfg.env.num_envs
         self.env_num_per_row = int(math.sqrt(self.num_envs))
 
@@ -143,11 +156,18 @@ class FrankaBaseEnv:
         self.franka_pose.p = gymapi.Vec3(0, 0, 0)
 
     def _load_ground_plane(self):
+        """
+        Load the ground plane and set its orientation.
+        """
         self.plane_params = gymapi.PlaneParams()
         self.plane_params.normal = gymapi.Vec3(0, 0, 1)
         self.gym.add_ground(self.sim, self.plane_params)
 
     def _create_envs(self):
+        """
+        Creates all of the environments, by loading the actor assets and setting
+        the actor DOFs and initial position.
+        """
         for i in range(self.num_envs):
             # create env
             env = self.gym.create_env(
@@ -174,7 +194,9 @@ class FrankaBaseEnv:
             )
 
     def _set_camera_position(self):
-        """Points camera to the middle of the simulation environment"""
+        """
+        Points camera to the middle of the simulation environment
+        """
         cam_pos = gymapi.Vec3(4, 3, 2)
         cam_target = gymapi.Vec3(-4, -3, 0)
         middle_env = self.envs[self.num_envs // 2 + self.env_num_per_row // 2]
