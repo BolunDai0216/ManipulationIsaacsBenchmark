@@ -4,9 +4,10 @@ import time
 from pdb import set_trace
 
 import numpy as np
-from isaacgym.torch_utils import *
 from isaacgym import gymapi, gymtorch, gymutil
+from isaacgym.torch_utils import *
 import torch
+from franka_utils import get_action
 
 
 class FrankaEnv:
@@ -359,8 +360,26 @@ def main():
     env = FrankaEnv()
     env.reset(render=True)
 
-    for i in range(1000000):
-        state, done = env.step(env.pos_action)
+    for i in range(10000):
+        action = get_action(
+            env.pos_action,
+            env.rb_states,
+            env.box_idxs,
+            env.hand_idxs,
+            env.down_dir,
+            env.down_q,
+            env.dof_pos,
+            env.box_size,
+            env.num_envs,
+            env.corners,
+            env.init_pos,
+            env.init_rot,
+            env.hand_restart,
+            env.j_eef,
+            env.device,
+        )
+
+        state, done = env.step(action)
 
         if done:
             break
